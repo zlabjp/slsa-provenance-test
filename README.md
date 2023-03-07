@@ -114,10 +114,9 @@ $ slsa-verifier verify-image ghcr.io/zlabjp/slsa-provenance-test@sha256:18d93590
 
 or
 
-FIXME: certificate-identity value
 ```
 $ cosign verify-attestation ghcr.io/zlabjp/slsa-provenance-test:v0.0.5 \
-         --certificate-identity-regexp="https://github.com/zlabjp/slsa-github-generator/.*" \
+         --certificate-identity-regexp="https://github.com/slsa-framework/slsa-github-generator/.*" \
          --certificate-oidc-issuer=https://token.actions.githubusercontent.com \
          --type slsaprovenance
 ```
