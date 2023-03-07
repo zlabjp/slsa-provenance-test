@@ -94,6 +94,14 @@ Body: {
 
 ### Verify
 
+```
+$ slsa-verifier verify-image ghcr.io/zlabjp/slsa-provenance-test@sha256:18d935906bbac62909c4a301616046a373f1f4ce714cdddf452a2381354034c0 \
+                --source-uri github.com/zlabjp/slsa-provenance-test \
+                --source-tag v0.0.5
+```
+
+or
+
 FIXME: certificate-identity
 ```
 $ cosign verify-attestation \
