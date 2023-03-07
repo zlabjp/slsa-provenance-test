@@ -47,8 +47,8 @@ Body: {
 ### Verify
 
 ```
-$ slsa-verifier verify-artifact "binary-linux-amd64"
-                --provenance-path "binary-linux-amd64.intoto.jsonl"
+$ slsa-verifier verify-artifact "binary-linux-amd64" \
+                --provenance-path "binary-linux-amd64.intoto.jsonl" \
                 --source-uri "github.com/zlabjp/slsa-provenance-test" \
                 --source-tag "v0.0.5"   
 ```
