@@ -101,3 +101,431 @@ $ cosign verify-attestation \
          --certificate-oidc-issuer=https://token.actions.githubusercontent.com
          ghcr.io/zlabjp/slsa-provenance-test:v0.0.5 
 ```
+
+### Show provenance
+
+```
+> docker buildx imagetools inspect ghcr.io/zlabjp/slsa-provenance-test:v0.0.5 --format "{{ json .Provenance.SLSA }}"
+```
+<details>
+<summary>output</summary>
+
+```json
+{
+  "buildConfig": {
+    "digestMapping": {
+      "sha256:2c55385cff27f03725baa576f152fed01724374a0a78e865616b1f23b29009a4": "step1",
+      "sha256:459a7ce65cf2cbf67af7b756e81f4baf06b3bbb597110df31c89a4c59165c1c5": "step0",
+      "sha256:8762169e75acc64712d28ed2d2557b1b86e0d1ee408b3fed64cd201e2c74e383": "step6",
+      "sha256:8824e9b3a491d8366e62a6c40cd2faf2a674dd75654d2c2011b2f4ebcae82696": "step2",
+      "sha256:9c2983bee7ccc9a7a78e68023862d96441c6ad232f234d49167edfeb861e04cc": "step3",
+      "sha256:a4c7ff10faf34e69e519045fa9cec8677ae4fe7bf04a341d818568704c5f317a": "step5",
+      "sha256:c0550c726d1950c5e93f6f808aff011ebbf177177b23e7810bb77ecb1806b3be": "step4"
+    },
+    "llbDefinition": [
+      {
+        "id": "step0",
+        "op": {
+          "Op": {
+            "source": {
+              "identifier": "docker-image://gcr.io/distroless/static@sha256:3c5767883bc3ad6c4ad7caf97f313e482f500f2c214f78e452ac1ca932e1bf7f"
+            }
+          },
+          "constraints": {},
+          "platform": {
+            "Architecture": "amd64",
+            "OS": "linux"
+          }
+        }
+      },
+      {
+        "id": "step1",
+        "op": {
+          "Op": {
+            "source": {
+              "identifier": "docker-image://docker.io/library/ubuntu@sha256:b2175cd4cfdd5cdb1740b0e6ec6bbb4ea4892801c0ad5101a81f694152b6c559"
+            }
+          },
+          "constraints": {},
+          "platform": {
+            "Architecture": "amd64",
+            "OS": "linux"
+          }
+        }
+      },
+      {
+        "id": "step2",
+        "op": {
+          "Op": {
+            "source": {
+              "attrs": {
+                "local.followpaths": "[\"binary-linux-amd64/binary-linux-amd64\"]",
+                "local.sharedkeyhint": "context"
+              },
+              "identifier": "local://context"
+            }
+          },
+          "constraints": {}
+        }
+      },
+      {
+        "id": "step3",
+        "inputs": [
+          "step1:0",
+          "step2:0"
+        ],
+        "op": {
+          "Op": {
+            "file": {
+              "actions": [
+                {
+                  "Action": {
+                    "copy": {
+                      "allowEmptyWildcard": true,
+                      "allowWildcard": true,
+                      "attemptUnpackDockerCompatibility": true,
+                      "createDestPath": true,
+                      "dest": "/app",
+                      "dirCopyContents": true,
+                      "followSymlink": true,
+                      "mode": -1,
+                      "src": "/binary-linux-amd64/binary-linux-amd64",
+                      "timestamp": -1
+                    }
+                  },
+                  "input": 0,
+                  "output": 0,
+                  "secondaryInput": 1
+                }
+              ]
+            }
+          },
+          "constraints": {},
+          "platform": {
+            "Architecture": "amd64",
+            "OS": "linux"
+          }
+        }
+      },
+      {
+        "id": "step4",
+        "inputs": [
+          "step3:0"
+        ],
+        "op": {
+          "Op": {
+            "exec": {
+              "meta": {
+                "args": [
+                  "/bin/sh",
+                  "-c",
+                  "chmod 755 /app"
+                ],
+                "cwd": "/",
+                "env": [
+                  "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+                ],
+                "removeMountStubsRecursive": true
+              },
+              "mounts": [
+                {
+                  "dest": "/",
+                  "input": 0,
+                  "output": 0
+                }
+              ]
+            }
+          },
+          "constraints": {},
+          "platform": {
+            "Architecture": "amd64",
+            "OS": "linux"
+          }
+        }
+      },
+      {
+        "id": "step5",
+        "inputs": [
+          "step0:0",
+          "step4:0"
+        ],
+        "op": {
+          "Op": {
+            "file": {
+              "actions": [
+                {
+                  "Action": {
+                    "copy": {
+                      "allowEmptyWildcard": true,
+                      "allowWildcard": true,
+                      "createDestPath": true,
+                      "dest": "/app",
+                      "dirCopyContents": true,
+                      "followSymlink": true,
+                      "mode": -1,
+                      "src": "/app",
+                      "timestamp": -1
+                    }
+                  },
+                  "input": 0,
+                  "output": 0,
+                  "secondaryInput": 1
+                }
+              ]
+            }
+          },
+          "constraints": {},
+          "platform": {
+            "Architecture": "amd64",
+            "OS": "linux"
+          }
+        }
+      },
+      {
+        "id": "step6",
+        "inputs": [
+          "step5:0"
+        ],
+        "op": {
+          "Op": null
+        }
+      }
+    ]
+  },
+  "buildType": "https://mobyproject.org/buildkit@v1",
+  "builder": {
+    "id": "https://github.com/zlabjp/slsa-provenance-test/actions/runs/4351212002"
+  },
+  "invocation": {
+    "configSource": {
+      "entryPoint": "Dockerfile"
+    },
+    "environment": {
+      "platform": "linux/amd64"
+    },
+    "parameters": {
+      "args": {
+        "label:org.opencontainers.image.created": "2023-03-07T06:13:07.859Z",
+        "label:org.opencontainers.image.description": "",
+        "label:org.opencontainers.image.licenses": "",
+        "label:org.opencontainers.image.revision": "24acc49548454b2f21a01a85d3357fc1858abdf4",
+        "label:org.opencontainers.image.source": "https://github.com/zlabjp/slsa-provenance-test",
+        "label:org.opencontainers.image.title": "slsa-provenance-test",
+        "label:org.opencontainers.image.url": "https://github.com/zlabjp/slsa-provenance-test",
+        "label:org.opencontainers.image.version": "v0.0.5"
+      },
+      "frontend": "dockerfile.v0",
+      "locals": [
+        {
+          "name": "context"
+        },
+        {
+          "name": "dockerfile"
+        }
+      ]
+    }
+  },
+  "materials": [
+    {
+      "digest": {
+        "sha256": "b2175cd4cfdd5cdb1740b0e6ec6bbb4ea4892801c0ad5101a81f694152b6c559"
+      },
+      "uri": "pkg:docker/ubuntu?digest=sha256:b2175cd4cfdd5cdb1740b0e6ec6bbb4ea4892801c0ad5101a81f694152b6c559\u0026platform=linux%2Famd64"
+    },
+    {
+      "digest": {
+        "sha256": "3c5767883bc3ad6c4ad7caf97f313e482f500f2c214f78e452ac1ca932e1bf7f"
+      },
+      "uri": "pkg:docker/gcr.io/distroless/static?digest=sha256:3c5767883bc3ad6c4ad7caf97f313e482f500f2c214f78e452ac1ca932e1bf7f\u0026platform=linux%2Famd64"
+    }
+  ],
+  "metadata": {
+    "buildFinishedOn": "2023-03-07T06:13:11.536355226Z",
+    "buildInvocationID": "yape2zf8kh5omd5fte3ja6kas",
+    "buildStartedOn": "2023-03-07T06:13:08.664000925Z",
+    "completeness": {
+      "environment": true,
+      "materials": false,
+      "parameters": true
+    },
+    "https://mobyproject.org/buildkit@v1#metadata": {
+      "layers": {
+        "step0:0": [
+          [
+            {
+              "digest": "sha256:383e1c5dd0c1830143b1230e90292ebd4219911e0512b70d250c8907c4899110",
+              "mediaType": "application/vnd.docker.image.rootfs.diff.tar.gzip",
+              "size": 820995
+            }
+          ],
+          [
+            {
+              "digest": "sha256:383e1c5dd0c1830143b1230e90292ebd4219911e0512b70d250c8907c4899110",
+              "mediaType": "application/vnd.docker.image.rootfs.diff.tar.gzip",
+              "size": 820995
+            }
+          ]
+        ],
+        "step1:0": [
+          [
+            {
+              "digest": "sha256:76769433fd8a87dd77a6ce33db12156b1ea8dad3da3a95e7c9c36a47ec17b24c",
+              "mediaType": "application/vnd.oci.image.layer.v1.tar+gzip",
+              "size": 29533839
+            }
+          ],
+          [
+            {
+              "digest": "sha256:76769433fd8a87dd77a6ce33db12156b1ea8dad3da3a95e7c9c36a47ec17b24c",
+              "mediaType": "application/vnd.oci.image.layer.v1.tar+gzip",
+              "size": 29533839
+            }
+          ]
+        ],
+        "step5:0": [
+          [
+            {
+              "digest": "sha256:383e1c5dd0c1830143b1230e90292ebd4219911e0512b70d250c8907c4899110",
+              "mediaType": "application/vnd.docker.image.rootfs.diff.tar.gzip",
+              "size": 820995
+            },
+            {
+              "digest": "sha256:8070b07ccc99ab19a2700cbc3ac95992f8ba7ccd50557f721fc30974f875398d",
+              "mediaType": "application/vnd.oci.image.layer.v1.tar+gzip",
+              "size": 1098241
+            }
+          ]
+        ]
+      },
+      "source": {
+        "infos": [
+          {
+            "data": "IyB1YnVudHU6MjIuMDQKRlJPTSB1YnVudHVAc2hhMjU2OmIyMTc1Y2Q0Y2ZkZDVjZGIxNzQwYjBlNmVjNmJiYjRlYTQ4OTI4MDFjMGFkNTEwMWE4MWY2OTQxNTJiNmM1NTkgYXMgYnVpbGRlcgoKQUREIGJpbmFyeS1saW51eC1hbWQ2NC9iaW5hcnktbGludXgtYW1kNjQgL2FwcAojIGh0dHBzOi8vZ2l0aHViLmNvbS9hY3Rpb25zL3VwbG9hZC1hcnRpZmFjdC9pc3N1ZXMvMzgKUlVOIGNobW9kIDc1NSAvYXBwCgpGUk9NIGdjci5pby9kaXN0cm9sZXNzL3N0YXRpY0BzaGEyNTY6M2M1NzY3ODgzYmMzYWQ2YzRhZDdjYWY5N2YzMTNlNDgyZjUwMGYyYzIxNGY3OGU0NTJhYzFjYTkzMmUxYmY3ZgoKQ09QWSAtLWZyb209YnVpbGRlciAvYXBwIC9hcHAKCkVOVFJZUE9JTlQgWyAiL2FwcCIgXQo=",
+            "digestMapping": {
+              "sha256:d5719d5c6ce52239c3966992e51cc5be350a522ba249ba2babf02eb009609f91": "step1",
+              "sha256:ef79c9adcb6be52924bffecb0d35ec121024decfefa84bdb15532ec595b029f2": "step0"
+            },
+            "filename": "Dockerfile",
+            "llbDefinition": [
+              {
+                "id": "step0",
+                "op": {
+                  "Op": {
+                    "source": {
+                      "attrs": {
+                        "local.differ": "none",
+                        "local.followpaths": "[\"Dockerfile\",\"Dockerfile.dockerignore\",\"dockerfile\"]",
+                        "local.sharedkeyhint": "dockerfile"
+                      },
+                      "identifier": "local://dockerfile"
+                    }
+                  },
+                  "constraints": {}
+                }
+              },
+              {
+                "id": "step1",
+                "inputs": [
+                  "step0:0"
+                ],
+                "op": {
+                  "Op": null
+                }
+              }
+            ]
+          }
+        ],
+        "locations": {
+          "step0": {
+            "locations": [
+              {
+                "ranges": [
+                  {
+                    "end": {
+                      "line": 8
+                    },
+                    "start": {
+                      "line": 8
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          "step1": {
+            "locations": [
+              {
+                "ranges": [
+                  {
+                    "end": {
+                      "line": 2
+                    },
+                    "start": {
+                      "line": 2
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          "step2": {},
+          "step3": {
+            "locations": [
+              {
+                "ranges": [
+                  {
+                    "end": {
+                      "line": 4
+                    },
+                    "start": {
+                      "line": 4
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          "step4": {
+            "locations": [
+              {
+                "ranges": [
+                  {
+                    "end": {
+                      "line": 6
+                    },
+                    "start": {
+                      "line": 6
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          "step5": {
+            "locations": [
+              {
+                "ranges": [
+                  {
+                    "end": {
+                      "line": 10
+                    },
+                    "start": {
+                      "line": 10
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      },
+      "vcs": {
+        "revision": "24acc49548454b2f21a01a85d3357fc1858abdf4-dirty",
+        "source": "https://github.com/zlabjp/slsa-provenance-test"
+      }
+    },
+    "reproducible": false
+  }
+}
+```
+</details>
