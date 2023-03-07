@@ -53,6 +53,18 @@ $ slsa-verifier verify-artifact "binary-linux-amd64"
                 --source-tag "v0.0.5"   
 ```
 
+or
+
+```
+$ cat binary-linux-amd64.intoto.jsonl | jq -r .signatures[0].cert | base64 -w0 > cert
+
+$ cosign verify-blob-attestation binary-linux-amd64 \
+         --signature binary-linux-amd64.intoto.jsonl \
+         --certificate cert \
+         --certificate-identity-regexp="https://github.com/slsa-framework/slsa-github-generator/.*" \
+         --certificate-oidc-issuer=https://token.actions.githubusercontent.com \
+         --type slsaprovenance
+```
 
 ## Container images
 
@@ -93,17 +105,6 @@ Body: {
 ```
 
 ### Verify
-
-```
-$ cosign verify-blob-attestation binary-linux-amd64 \
-         --signature binary-linux-amd64.intoto.jsonl \
-         --certificate sig \
-         --certificate-identity-regexp="https://github.com/slsa-framework/slsa-github-generator/.*" \
-         --certificate-oidc-issuer=https://token.actions.githubusercontent.com \
-         --type slsaprovenance
-```
-
-or
 
 ```
 $ slsa-verifier verify-image ghcr.io/zlabjp/slsa-provenance-test@sha256:18d935906bbac62909c4a301616046a373f1f4ce714cdddf452a2381354034c0 \
