@@ -112,7 +112,12 @@ $ slsa-verifier verify-image ghcr.io/zlabjp/slsa-provenance-test@sha256:18d93590
                 --source-tag v0.0.5
 ```
 
-or
+※ In v0.0.5, we reference `slsa-framework/slsa-github-generator/.github/workflows/generator_container_slsa3.yml@main`, so the validation fails.
+When a new version is released, we need to update refs with tag.
+
+see: https://github.com/zlabjp/slsa-provenance-test/blob/v0.0.5/.github/workflows/slsa-provenance.yml#L125
+
+or 
 
 ```
 $ cosign verify-attestation ghcr.io/zlabjp/slsa-provenance-test:v0.0.5 \
