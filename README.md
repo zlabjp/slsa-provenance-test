@@ -95,6 +95,17 @@ Body: {
 ### Verify
 
 ```
+$ cosign verify-blob-attestation binary-linux-amd64 \
+         --signature binary-linux-amd64.intoto.jsonl \
+         --certificate sig \
+         --certificate-identity-regexp="https://github.com/slsa-framework/slsa-github-generator/.*" \
+         --certificate-oidc-issuer=https://token.actions.githubusercontent.com \
+         --type slsaprovenance
+```
+
+or
+
+```
 $ slsa-verifier verify-image ghcr.io/zlabjp/slsa-provenance-test@sha256:18d935906bbac62909c4a301616046a373f1f4ce714cdddf452a2381354034c0 \
                 --source-uri github.com/zlabjp/slsa-provenance-test \
                 --source-tag v0.0.5
@@ -102,12 +113,12 @@ $ slsa-verifier verify-image ghcr.io/zlabjp/slsa-provenance-test@sha256:18d93590
 
 or
 
-FIXME: certificate-identity
+FIXME: certificate-identity value
 ```
-$ cosign verify-attestation \
+$ cosign verify-attestation ghcr.io/zlabjp/slsa-provenance-test:v0.0.5 \
          --certificate-identity-regexp="https://github.com/zlabjp/slsa-github-generator/.*" \
-         --certificate-oidc-issuer=https://token.actions.githubusercontent.com
-         ghcr.io/zlabjp/slsa-provenance-test:v0.0.5 
+         --certificate-oidc-issuer=https://token.actions.githubusercontent.com \
+         --type slsaprovenance
 ```
 
 ### Show provenance
