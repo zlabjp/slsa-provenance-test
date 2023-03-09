@@ -384,9 +384,9 @@ The Actions workflow pushes images and attestations to GitHub packages.
 
 search entries by container's hash value
 ```
-$ rekor-cli search --sha "18d935906bbac62909c4a301616046a373f1f4ce714cdddf452a2381354034c0"
+$ rekor-cli search --sha "3dbd76ff6dc789a8bfd7b3303b15dd6fbac052af442f830b2eb527ab26976cf3"
 Found matching entries (listed by UUID):
-24296fb24b8ad77a3c4acd8f2f5e8f656c9743bd79f682cc16e6927ff202acaa9c77d7908e07a076
+24296fb24b8ad77adfc165e2090a060fe97162d5a5f08af3e3927d9365371f1869e3bf1d6a029262
 ```
 
 ```
@@ -416,7 +416,7 @@ Body: {
 ### Verify
 
 ```
-$ slsa-verifier verify-image ghcr.io/zlabjp/slsa-provenance-test@sha256:18d935906bbac62909c4a301616046a373f1f4ce714cdddf452a2381354034c0 \
+$ slsa-verifier verify-image ghcr.io/zlabjp/slsa-provenance-test@sha256:3dbd76ff6dc789a8bfd7b3303b15dd6fbac052af442f830b2eb527ab26976cf3 \
                 --source-uri github.com/zlabjp/slsa-provenance-test \
                 --source-tag v0.0.5
 ```
@@ -429,7 +429,7 @@ see: https://github.com/zlabjp/slsa-provenance-test/blob/v0.0.5/.github/workflow
 or 
 
 ```
-$ cosign verify-attestation ghcr.io/zlabjp/slsa-provenance-test:v0.0.5 \
+$ cosign verify-attestation ghcr.io/zlabjp/slsa-provenance-test@sha256:3dbd76ff6dc789a8bfd7b3303b15dd6fbac052af442f830b2eb527ab26976cf3 \
          --certificate-identity-regexp="https://github.com/slsa-framework/slsa-github-generator/.*" \
          --certificate-oidc-issuer=https://token.actions.githubusercontent.com \
          --type slsaprovenance
