@@ -2,8 +2,18 @@
 
 This is only used for testing [slsa-github-generator](https://github.com/slsa-framework/slsa-github-generator) and [slsa-verifier](https://github.com/slsa-framework/slsa-verifier).
 
-The latest version of slsa-github-generator (`v1.5.0`) does not fully support private Sigstore tools (Rekor, Fulcio) 
+The latest version of slsa-github-generator (`v1.5.0`) does not fully support private Sigstore tools (Rekor, Fulcio)
 and this repo's software supply chain metadata is exposed to the public Rekor instance as transparency logs.
+
+- [Artifacts](#artifacts)
+    - [Binary files](#binary-files)
+        - [Find transparency logs](#find-transparency-logs)
+        - [Verify](#verify)
+        - [Show provenance](#show-provenance)
+    - [Container images](#container-images)
+        - [Find transparency logs](#find-transparency-logs-1)
+        - [Verify](#verify-1)
+        - [Show provenance](#show-provenance-1)
 
 ## Artifacts
 
@@ -47,7 +57,7 @@ Body: {
 }
 ```
 
-### Verify
+#### Verify
 
 ```
 $ slsa-verifier verify-artifact "binary-linux-amd64" \
@@ -69,7 +79,7 @@ $ cosign verify-blob-attestation binary-linux-amd64 \
          --type slsaprovenance
 ```
 
-### Show provenance
+#### Show provenance
 
 ```
 $ cat binary-linux-amd64.intoto.jsonl
@@ -373,14 +383,14 @@ $ cat binary-linux-amd64.intoto.jsonl | jq -r  .payload | base64 -d | jq .
 </details>
 
 
-## Container images
+### Container images
 
 The Actions workflow pushes images and attestations to GitHub packages.
 
 - `slsa-provenance-test:${image_diget}`
 - `slsa-provenance-test:${image_diget}.att`
 
-### Find transparency logs
+#### Find transparency logs
 
 search entries by container's hash value
 ```
@@ -413,7 +423,7 @@ Body: {
 }
 ```
 
-### Verify
+#### Verify
 
 ```
 $ slsa-verifier verify-image ghcr.io/zlabjp/slsa-provenance-test@sha256:3dbd76ff6dc789a8bfd7b3303b15dd6fbac052af442f830b2eb527ab26976cf3 \
@@ -426,7 +436,7 @@ When a new version is released, we need to update refs with tag.
 
 see: https://github.com/zlabjp/slsa-provenance-test/blob/v0.0.5/.github/workflows/slsa-provenance.yml#L125
 
-or 
+or
 
 ```
 $ cosign verify-attestation ghcr.io/zlabjp/slsa-provenance-test@sha256:3dbd76ff6dc789a8bfd7b3303b15dd6fbac052af442f830b2eb527ab26976cf3 \
@@ -435,7 +445,7 @@ $ cosign verify-attestation ghcr.io/zlabjp/slsa-provenance-test@sha256:3dbd76ff6
          --type slsaprovenance
 ```
 
-### Show provenance
+#### Show provenance
 
 ```
 $ docker buildx imagetools inspect ghcr.io/zlabjp/slsa-provenance-test:v0.0.5 --format "{{ json .Provenance.SLSA }}"
